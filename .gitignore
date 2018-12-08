@@ -2,3 +2,10 @@
 createTestFiles.sh
 bogusFiles/
 
+#extentions used for test cases...
+*.jpg
+*.jpeg
+*.png
+*._
+
+*/*

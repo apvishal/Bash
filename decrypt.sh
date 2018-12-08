@@ -10,7 +10,7 @@
 #	1) Prompt the user for a folder name
 #	2) Check if folder exists...
 #	3) get the expected passphrase
-#	4) attempt to dercypt the files ( error checking is performed after attempting to decrypt each file )
+#	4) attempt to decrypt the files ( error checking is performed after attempting to decrypt each file )
 #	5) extract the file name from each file after it is decrypted
 #	6) rename the file to the extracted file name
 #	7) ask if the user wants to compare checksums, if so, get the checksum of current folder items, and compare
