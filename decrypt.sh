@@ -91,8 +91,8 @@ function compareCheckSums {
 #################################################
 
 echo Enter the Desired Directory \(NOTE: the directory should have been encrypted using the encrypt.sh script\)
-read USERDIRECTORY
-checkIfDirectoryExists $USERDIRECTORY
+read FOLDERNAME
+checkIfDirectoryExists $FOLDERNAME
 
 echo Enter the expected passphrase: 
 read -s PASSPHRASE

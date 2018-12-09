@@ -7,5 +7,6 @@ bogusFiles/
 *.jpeg
 *.png
 *._
-
+*.temp
+*.tmp
 */*

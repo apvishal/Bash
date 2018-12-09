@@ -28,6 +28,7 @@
 # sed		4.5
 # awk		4.2.1
 # shuf		8.29
+# zenity	3.28.1
 ###END_INFO
 TIMESTAMP=`date "+%M%d%y%H%M%S"`
 
@@ -39,7 +40,33 @@ function checkAnalysisFlag {
 		echo check commands before proceeding...
 		exit
 	fi
-}	
+}
+function getUserPassPhrase {
+
+	# use zenity to create a popup dialog to prompt the user for his or her passphrase...
+	# we will user two passphrase fields, this way we can verify the passphrases are the same
+	RESULT=$(zenity \
+		--forms \
+		--title="Create New Passphrase" \
+		--text="Create Your Passphrase\n\tNOTE: you must remember this passphrase...\n" \
+		--separator="," \
+		--add-password="PassPhrase" \
+		--add-password="Confirm PassPhrase")
+
+	# TODO need to account for the "cancel" button, or when the passphrases dont match...
+	# since we used the ',' separator, split the two inputs and compare...
+	if [  "$(echo $RESULT | cut -d, -f1)" != "$(echo $RESULT | cut -d, -f2)" ]; then
+		# the inputs do not match... prompt the user and send error message for now...
+		zenity --error \
+			--text="ERROR: The passwords did not match..."
+		echo "ERROR"
+	else
+		# the passphrases match...
+		echo $RESULT | cut -d, -f1
+	fi	
+
+}
+
 function updateTimeStamp {
 
 	# the current working directory...
@@ -105,9 +132,16 @@ function getCheckSum {
 	echo $CHECKSUM > $FOLDERNAME/checksum.txt
 }
 function encryptFiles {
+
 	# first, we need the users passphrase
-	echo Enter your passphrase \(REMEMBER YOUR PASSPHRASE\): 
-	read -s PASSPHRASE
+	PASSPHRASE=$(getUserPassPhrase)
+
+	# check for an error...
+	if [[ $PASSPHRASE =~ "ERROR" ]]; then
+		# error occured, exit the program
+		exit
+	fi
+
 	# let user know we about to encrypt the files
 	echo Encrypting files...
 	# loop to encrypt each file
